@@ -1,8 +1,17 @@
+// Context
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./common/theme";
+
+// Pages
+import Landing from "./pages/index/Landing";
+
 function App() {
     return (
-        <div>
-            <h1>Hello world</h1>
-        </div>
+        <>
+            <ThemeProvider theme={theme}>
+                <Landing />
+            </ThemeProvider>
+        </>
     );
 }
 
