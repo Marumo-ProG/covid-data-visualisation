@@ -78,7 +78,6 @@ const Landing = () => {
     }, [selectedDate]);
     return (
         <Stack px={PageGutter} py={3} boxSizing={"border-box"} spacing={4}>
-            {/* <Typography variant="h1">Landing</Typography> */}
             <Stack direction="row" spacing={3} alignItems={"center"}>
                 <Calendar
                     minDate={dayjs(covidData.records[0].date)}
