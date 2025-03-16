@@ -3,5 +3,5 @@ In this application the data is served by the backend and displayed on the front
 
 # Running Backend
 in the backend folder
-'''npm install'''
-''' npm start'''
+''npm install''
+'' npm start''
