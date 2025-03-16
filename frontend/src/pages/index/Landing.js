@@ -41,7 +41,7 @@ const Landing = () => {
     }, []);
 
     const fetchCovidData = async () => {
-        const response = await fetch("http://localhost:5000/api/covid/");
+        const response = await fetch(process.env.REACT_APP_API_URL + "covid/");
         console.log(response);
         await response
             .json()
@@ -96,6 +96,8 @@ const Landing = () => {
             setDayData(covidData?.records.find((record) => record.date === selectedDate));
             setSelectedFilter("all");
             setGraphType("bar");
+
+            console.log(covidData?.records.find((record) => record.date === selectedDate));
         }
     }, [selectedDate]);
     return (
