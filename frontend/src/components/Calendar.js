@@ -4,7 +4,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-export default function BasicDatePicker({ minDate, maxDate, defaultDate, handleOnChange }) {
+export default function BasicDatePicker({ minDate, maxDate, handleOnChange, value, defaultValue }) {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={["DatePicker"]}>
@@ -13,7 +13,8 @@ export default function BasicDatePicker({ minDate, maxDate, defaultDate, handleO
                     size="small"
                     label="Filter by Date:"
                     inputFormat="yyyy/MM/dd"
-                    value={defaultDate}
+                    value={value}
+                    defaultValue={defaultValue}
                     minDate={minDate}
                     maxDate={maxDate}
                 />

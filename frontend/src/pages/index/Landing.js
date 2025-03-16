@@ -9,17 +9,29 @@ import Stack from "@mui/material/Stack";
 import Grid2 from "@mui/material/Grid2";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import IconButton from "@mui/material/IconButton";
 
 // Components
 import TotalBlock from "../../components/TotalBlock";
-import LineGraph from "../../components/LineGraph";
+import Graph from "../../components/Graph";
 import Calendar from "../../components/Calendar";
 
 // Utils
 import { Colors, PageGutter, covidData } from "../../common/constants";
 
+// Icons
+import CloseIcon from "@mui/icons-material/Close";
+
 const Landing = () => {
     const [selectedFilter, setSelectedFilter] = useState("all");
+    const [graphType, setGraphType] = useState("line");
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [dayData, setDayData] = useState(null);
+
     const graphData = [
         {
             label: "Confirmed",
@@ -47,15 +59,47 @@ const Landing = () => {
         },
     ];
 
-    console.log(covidData.records[0].date);
+    const handleDateSelect = (date) => {
+        setSelectedDate(dayjs(date).format("YYYY/MM/DD"));
+    };
+    const handleCancelDate = () => {
+        setSelectedDate(null);
+        setDayData(null);
+        setSelectedFilter("all");
+        setGraphType("line");
+    };
+
+    useEffect(() => {
+        if (selectedDate) {
+            setDayData(covidData.records.find((record) => record.date === selectedDate));
+            setSelectedFilter("all");
+            setGraphType("bar");
+        }
+    }, [selectedDate]);
     return (
         <Stack px={PageGutter} py={3} boxSizing={"border-box"} spacing={4}>
             {/* <Typography variant="h1">Landing</Typography> */}
+            <Stack direction="row" spacing={3} alignItems={"center"}>
+                <Calendar
+                    minDate={dayjs(covidData.records[0].date)}
+                    maxDate={dayjs(covidData.records[covidData.records.length - 1].date)}
+                    handleOnChange={handleDateSelect}
+                    defaultValue={null}
+                    value={selectedDate ? dayjs(selectedDate) : null}
+                />
+                {dayData && (
+                    <IconButton onClick={handleCancelDate}>
+                        <CloseIcon />
+                    </IconButton>
+                )}
+            </Stack>
             <Grid2 container spacing={3}>
                 <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                     <TotalBlock
-                        title="Confirmed"
-                        total={covidData.totals.totalConfirmedCases}
+                        title={dayData ? "Daily Confirmed" : "Confirmed"}
+                        total={
+                            dayData ? dayData.dailyConfirmed : covidData.totals.totalConfirmedCases
+                        }
                         color={Colors.red}
                     />
                 </Grid2>
@@ -75,8 +119,8 @@ const Landing = () => {
                 </Grid2>
                 <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
                     <TotalBlock
-                        title="Deaths"
-                        total={covidData.totals.totalDeaths}
+                        title={dayData ? "Daily Deaths" : "Deaths"}
+                        total={dayData ? dayData.dailyDeaths : covidData.totals.totalDeaths}
                         color={Colors.grey}
                     />
                 </Grid2>
@@ -98,14 +142,24 @@ const Landing = () => {
                         <ToggleButton value="deaths">Deaths</ToggleButton>
                     </ToggleButtonGroup>
 
-                    <Calendar
-                        minDate={dayjs(covidData.records[0].date)}
-                        maxDate={dayjs(covidData.records[covidData.records.length - 1].date)}
-                    />
+                    <Stack direction="row" spacing={3} alignItems={"center"}>
+                        <FormControl sx={{ width: 200 }}>
+                            <InputLabel id="graph-type">Graph Type</InputLabel>
+                            <Select
+                                value={graphType}
+                                onChange={(event) => setGraphType(event.target.value)}
+                                label="Graph Type"
+                            >
+                                <MenuItem value="line">Line</MenuItem>
+                                <MenuItem value="bar">Bar</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Stack>
                 </Stack>
             </Stack>
-            <LineGraph
-                labels={covidData.records.map((record) => record.date)}
+            <Graph
+                type={graphType}
+                labels={dayData ? [dayData.date] : covidData.records.map((record) => record.date)}
                 datasets={
                     selectedFilter === "all"
                         ? graphData
