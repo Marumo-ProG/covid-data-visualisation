@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 
 // MUI
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Grid2 from "@mui/material/Grid2";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
@@ -14,6 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import IconButton from "@mui/material/IconButton";
+import CardMedia from "@mui/material/CardMedia";
 
 // Components
 import TotalBlock from "../../components/TotalBlock";
@@ -25,6 +25,9 @@ import { Colors, PageGutter, covidData } from "../../common/constants";
 
 // Icons
 import CloseIcon from "@mui/icons-material/Close";
+
+// Images
+import BannerImage from "../../common/banner.png";
 
 const Landing = () => {
     const [selectedFilter, setSelectedFilter] = useState("all");
@@ -78,6 +81,29 @@ const Landing = () => {
     }, [selectedDate]);
     return (
         <Stack px={PageGutter} py={3} boxSizing={"border-box"} spacing={4}>
+            <Stack direction="row" spacing={3} alignItems={"center"}>
+                <CardMedia
+                    component={"img"}
+                    image={BannerImage}
+                    alt="Banner"
+                    sx={{
+                        objectFit: "cover",
+                        height: 500,
+                        width: "50%",
+                    }}
+                />
+                <Stack spacing={3}>
+                    <Typography variant="h4">Welcome to Covid 19 Tracker</Typography>
+                    <Typography variant="body1">
+                        This is a simple Covid 19 tracker that shows the total number of confirmed
+                        cases, active cases, recovered cases, and deaths.
+                    </Typography>
+                    <Typography variant="body1">
+                        You can also filter the data by date and view the daily confirmed cases and
+                        deaths.
+                    </Typography>
+                </Stack>
+            </Stack>
             <Stack direction="row" spacing={3} alignItems={"center"}>
                 <Calendar
                     minDate={dayjs(covidData.records[0].date)}
