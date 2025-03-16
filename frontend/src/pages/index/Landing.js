@@ -57,27 +57,33 @@ const Landing = () => {
     const graphData = [
         {
             label: "Confirmed",
-            data: covidData?.records.map((record) => record.confirmed),
+            data: dayData
+                ? [dayData.dailyConfirmed]
+                : covidData?.records.map((record) => record.confirmed),
             borderColor: Colors.red,
-            backgroundColor: `${Colors.red}1A`,
+            backgroundColor: graphType === "bar" ? Colors.red : `${Colors.red}1A`,
         },
         {
             label: "Active",
-            data: covidData?.records.map((record) => record.active),
+            data: dayData ? [dayData.active] : covidData?.records.map((record) => record.active),
             borderColor: Colors.blue,
-            backgroundColor: `${Colors.blue}1A`,
+            backgroundColor: graphType === "bar" ? Colors.blue : `${Colors.blue}1A`,
         },
         {
             label: "Recovered",
-            data: covidData?.records.map((record) => record.recovered),
+            data: dayData
+                ? [dayData.recovered]
+                : covidData?.records.map((record) => record.recovered),
             borderColor: Colors.green,
-            backgroundColor: `${Colors.green}1A`,
+            backgroundColor: graphType === "bar" ? Colors.green : `${Colors.green}1A`,
         },
         {
             label: "Deaths",
-            data: covidData?.records.map((record) => record.deaths),
+            data: dayData
+                ? [dayData.dailyDeaths]
+                : covidData?.records.map((record) => record.deaths),
             borderColor: Colors.grey,
-            backgroundColor: `${Colors.grey}1A`,
+            backgroundColor: graphType === "bar" ? Colors.grey : `${Colors.grey}1A`,
         },
     ];
 
